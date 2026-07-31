@@ -18,9 +18,3 @@ npm install
 npx expo start
 ```
 
-## Team
-Abdullah (AR + AI)
-
-Mehrab (Frontend)
-
-Areej (Backend)
