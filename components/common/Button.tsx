@@ -15,13 +15,11 @@ export default function Button({
   disabled = false,
   className = '',
 }: ButtonProps) {
-  const baseClasses = 'py-3 px-6 rounded-lg items-center justify-center';
+  const baseClasses = 'py-3.5 px-6 rounded-full items-center justify-center';
   const variantClasses =
-    variant === 'primary'
-      ? 'bg-gold'
-      : 'bg-card border border-gold';
+    variant === 'primary' ? 'bg-primary' : 'bg-white border-2 border-primary';
   const textClasses =
-    variant === 'primary' ? 'text-dark font-semibold' : 'text-gold font-semibold';
+    variant === 'primary' ? 'text-on-primary font-semibold' : 'text-primary font-semibold';
   const disabledClasses = disabled ? 'opacity-50' : '';
 
   return (

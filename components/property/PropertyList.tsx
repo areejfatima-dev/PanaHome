@@ -13,8 +13,8 @@ export default function PropertyList({
 }: PropertyListProps) {
   if (properties.length === 0) {
     return (
-      <View className="flex-1 items-center justify-center bg-dark">
-        <Text className="text-gray-400">No properties found</Text>
+      <View className="flex-1 items-center justify-center bg-background">
+        <Text className="text-on-surface-variant">No properties found</Text>
       </View>
     );
   }
@@ -35,7 +35,7 @@ export default function PropertyList({
           onPress={() => onPropertyPress?.(item)}
         />
       )}
-      contentContainerStyle={{ backgroundColor: '#0A0A0A' }}
+      contentContainerStyle={{ backgroundColor: '#f7f9fc' }}
     />
   );
 }

@@ -1,18 +1,26 @@
 import '../global.css';
-import { Stack, ThemeProvider, DarkTheme, DefaultTheme } from 'expo-router';
+import { Stack, ThemeProvider, DefaultTheme } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useColorScheme } from 'react-native';
+import { View, Platform } from 'react-native';
 import 'react-native-reanimated';
 import { SettingsProvider } from '@/contexts/SettingsContext';
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <SettingsProvider>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack screenOptions={{ headerShown: false }}>
+      <ThemeProvider value={DefaultTheme}>
+        <View
+          style={{
+            flex: 1,
+            width: '100%',
+            maxWidth: Platform.OS === 'web' ? 430 : undefined,
+            alignSelf: Platform.OS === 'web' ? 'center' : undefined,
+            backgroundColor: '#f7f9fc',
+          }}
+        >
+          <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="index" />
+          <Stack.Screen name="role-select" />
           <Stack.Screen name="(auth)/login" />
           <Stack.Screen name="(auth)/signup" />
           <Stack.Screen name="(auth)/forgot-password" />
@@ -23,10 +31,14 @@ export default function RootLayout() {
           <Stack.Screen name="(buyer)/complaint-centre" />
           <Stack.Screen name="(buyer)/ar-walkthrough" />
           <Stack.Screen name="(buyer)/ar-furniture-placement" />
+          <Stack.Screen name="(buyer)/property-details" />
+          <Stack.Screen name="(buyer)/profile" />
+          <Stack.Screen name="(buyer)/ai-assistant" />
           <Stack.Screen name="(seller)/dashboard" />
           <Stack.Screen name="(seller)/edit-property" />
           <Stack.Screen name="(seller)/analytics" />
           <Stack.Screen name="(seller)/availability-settings" />
+          <Stack.Screen name="(seller)/profile" />
           <Stack.Screen name="(seller)/add-property/step-1-basic" />
           <Stack.Screen name="(seller)/add-property/step-2-rooms" />
           <Stack.Screen name="(seller)/add-property/step-3-capture" />
@@ -36,8 +48,10 @@ export default function RootLayout() {
           <Stack.Screen name="(admin)/property-approvals" />
           <Stack.Screen name="(admin)/user-management" />
           <Stack.Screen name="(admin)/complaint-management" />
+          <Stack.Screen name="(admin)/profile" />
         </Stack>
-        <StatusBar style="light" />
+        <StatusBar style="dark" />
+        </View>
       </ThemeProvider>
     </SettingsProvider>
   );

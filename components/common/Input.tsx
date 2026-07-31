@@ -23,14 +23,14 @@ export default function Input({
     <View className={`mb-4 ${className}`}>
       <TextInput
         placeholder={placeholder}
-        placeholderTextColor="#888"
+        placeholderTextColor="#747780"
         value={value}
         onChangeText={onChangeText}
         secureTextEntry={secureTextEntry}
         keyboardType={keyboardType}
-        className="bg-card text-white p-4 rounded-lg"
+        className="bg-surface-container-low text-on-surface p-4 rounded-[14px]"
       />
-      {error && <Text className="text-danger text-sm mt-1">{error}</Text>}
+      {error && <Text className="text-error text-sm mt-1">{error}</Text>}
     </View>
   );
 }

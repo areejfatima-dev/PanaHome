@@ -15,8 +15,8 @@ export default function Loader({
 
   const content = (
     <View className="items-center justify-center">
-      <ActivityIndicator size="large" color="#FFB347" />
-      {message && <Text className="text-white mt-2">{message}</Text>}
+      <ActivityIndicator size="large" color="#835400" />
+      {message && <Text className="text-primary mt-2">{message}</Text>}
     </View>
   );
 

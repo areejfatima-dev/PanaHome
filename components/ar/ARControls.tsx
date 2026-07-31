@@ -8,15 +8,15 @@ interface ARControlsProps {
 
 export default function ARControls({ onPlace, onReset, onRotate }: ARControlsProps) {
   return (
-    <View className="absolute bottom-0 left-0 right-0 bg-card p-4 flex-row justify-around">
-      <TouchableOpacity onPress={onPlace} className="bg-gold px-4 py-2 rounded-lg">
-        <Text className="text-dark font-semibold">Place</Text>
+    <View className="absolute bottom-0 left-0 right-0 bg-white p-4 flex-row justify-around border-t border-surface-container">
+      <TouchableOpacity onPress={onPlace} className="bg-primary px-4 py-2 rounded-full">
+        <Text className="text-on-primary font-semibold">Place</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={onReset} className="bg-gold px-4 py-2 rounded-lg">
-        <Text className="text-dark font-semibold">Reset</Text>
+      <TouchableOpacity onPress={onReset} className="bg-primary px-4 py-2 rounded-full">
+        <Text className="text-on-primary font-semibold">Reset</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={onRotate} className="bg-gold px-4 py-2 rounded-lg">
-        <Text className="text-dark font-semibold">Rotate</Text>
+      <TouchableOpacity onPress={onRotate} className="bg-primary px-4 py-2 rounded-full">
+        <Text className="text-on-primary font-semibold">Rotate</Text>
       </TouchableOpacity>
     </View>
   );

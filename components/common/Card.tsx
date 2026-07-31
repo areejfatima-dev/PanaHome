@@ -8,8 +8,8 @@ interface CardProps {
 
 export default function Card({ title, children, className = '' }: CardProps) {
   return (
-    <View className={`bg-card rounded-lg p-4 mb-4 ${className}`}>
-      {title && <Text className="text-white font-semibold text-lg mb-2">{title}</Text>}
+    <View className={`bg-white rounded-[20px] p-4 mb-4 border border-surface-container-low shadow-sm ${className}`}>
+      {title && <Text className="text-primary font-semibold text-lg mb-2">{title}</Text>}
       {children}
     </View>
   );

@@ -12,6 +12,7 @@
   "dependencies": {
     "@expo/material-symbols": "^0.1.1",
     "@expo/ui": "~57.0.4",
+    "@expo/vector-icons": "^15.0.2",
     "@react-navigation/bottom-tabs": "^7.4.2",
     "@react-navigation/native": "^7.1.0",
     "@react-navigation/stack": "^7.5.1",
