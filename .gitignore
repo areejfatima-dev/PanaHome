@@ -1,0 +1,14 @@
+node_modules/
+.expo/
+dist/
+*.log
+.env
+.DS_Store
+*.pkl
+*.pyc
+__pycache__/
+
+# Generated native directories (CNG workflow)
+android/
+ios/
+web-build/
