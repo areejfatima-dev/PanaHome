@@ -59,7 +59,7 @@ export default function ArFurniturePlacement() {
               <TouchableOpacity
                 key={f.name}
                 className={`w-24 py-3.5 rounded-[16px] items-center border ${
-                  f.selected ? 'bg-secondary border-secondary shadow-lg' : 'bg-white/15 backdrop-blur border-white/30'
+                  f.selected ? 'bg-secondary border-secondary shadow-lg' : 'bg-white/15 backdrop-blur border-white/30 shadow-none'
                 }`}
               >
                 <MaterialIcons name={f.icon as any} size={26} color={f.selected ? '#fff' : '#fff'} />

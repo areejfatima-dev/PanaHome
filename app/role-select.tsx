@@ -25,7 +25,7 @@ export default function RoleSelect() {
             className={`flex-row items-center gap-4 rounded-[20px] p-5 border-2 ${
               role === 'seller'
                 ? 'bg-white border-primary shadow-lg'
-                : 'bg-white border-surface-container-low'
+                : 'bg-white border-surface-container-low shadow-none'
             }`}
           >
             <View className={`w-12 h-12 rounded-full items-center justify-center ${role === 'seller' ? 'bg-primary' : 'bg-surface-container-high'}`}>
@@ -45,7 +45,7 @@ export default function RoleSelect() {
             className={`flex-row items-center gap-4 rounded-[20px] p-5 border-2 ${
               role === 'buyer'
                 ? 'bg-white border-primary shadow-lg'
-                : 'bg-white border-surface-container-low'
+                : 'bg-white border-surface-container-low shadow-none'
             }`}
           >
             <View className={`w-12 h-12 rounded-full items-center justify-center ${role === 'buyer' ? 'bg-primary' : 'bg-surface-container-high'}`}>
@@ -72,6 +72,18 @@ export default function RoleSelect() {
         <Text className="text-center text-outline text-xs mt-8 flex-row items-center justify-center gap-1">
           Safe & AI-Verified Transactions
         </Text>
+
+        <TouchableOpacity
+          onPress={() => router.push('/(admin)/dashboard')}
+          className="mt-6 self-center flex-row items-center gap-1"
+        >
+          <Text className="text-on-surface-variant text-xs">
+            Admin access?{' '}
+          </Text>
+          <Text className="text-secondary font-semibold text-xs">
+            Enter Admin Panel
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

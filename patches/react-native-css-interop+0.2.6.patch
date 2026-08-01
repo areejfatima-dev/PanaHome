@@ -14,23 +14,47 @@ diff --git a/node_modules/react-native-css-interop/.cache/windows.js b/node_modu
 new file mode 100644
 index 0000000..e69de29
 diff --git a/node_modules/react-native-css-interop/dist/runtime/native/render-component.js b/node_modules/react-native-css-interop/dist/runtime/native/render-component.js
-index eba25ec..13a72f9 100644
+index eba25ec..b05a2ba 100644
 --- a/node_modules/react-native-css-interop/dist/runtime/native/render-component.js
 +++ b/node_modules/react-native-css-interop/dist/runtime/native/render-component.js
-@@ -131,7 +131,15 @@ function stringify(object) {
+@@ -122,6 +122,7 @@ function printUpgradeWarning(warning, originalProps) {
+ }
+ function stringify(object) {
+     const seen = new WeakSet();
++    let depth = 0;
+     return JSON.stringify(object, function replace(_, value) {
+         if (!(value !== null && typeof value === "object")) {
+             return value;
+@@ -129,12 +130,29 @@ function stringify(object) {
+         if (seen.has(value)) {
+             return "[Circular]";
          }
++        if (depth > 20) {
++            return "[Too Deep]";
++        }
          seen.add(value);
++        depth++;
          const newValue = Array.isArray(value) ? [] : {};
 -        for (const entry of Object.entries(value)) {
+-            newValue[entry[0]] = replace(entry[0], entry[1]);
 +        let entries;
 +        try {
 +            entries = Object.entries(value);
 +        }
 +        catch (_a) {
-+            seen.delete(value);
++            depth--;
 +            return "[Unserializable]";
 +        }
 +        for (const entry of entries) {
-             newValue[entry[0]] = replace(entry[0], entry[1]);
++            try {
++                newValue[entry[0]] = replace(entry[0], entry[1]);
++            }
++            catch (_b) {
++                newValue[entry[0]] = "[Unserializable]";
++            }
          }
-         seen.delete(value);
+-        seen.delete(value);
++        depth--;
+         return newValue;
+     }, 2);
+ }
