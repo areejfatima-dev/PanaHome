@@ -1,11 +1,41 @@
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { Link } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useAddPropertyStore } from '@/store/addPropertyStore';
 
-const STEPS = ['Basic', 'Rooms', 'Photos', 'Location', 'Review'];
+const STEPS = ['Basic', 'Structure', 'Photos', 'Location', 'Review'];
 const STEP = 1;
 
+const PROPERTY_TYPES = ['Apartment', 'Villa', 'Commercial'];
+
 export default function Step1Basic() {
+  const { title: storeTitle, description: storeDescription, propertyType: storeType, area: storeArea, setStep1 } = useAddPropertyStore();
+
+  const [title, setTitle] = useState(storeTitle);
+  const [description, setDescription] = useState(storeDescription);
+  const [propertyType, setPropertyType] = useState(storeType || 'Apartment');
+  const [area, setArea] = useState(storeArea);
+
+  function saveAndContinue(): boolean {
+    if (!title.trim()) {
+      Alert.alert('Missing Title', 'Please enter a property title.');
+      return false;
+    }
+    if (!area.trim()) {
+      Alert.alert('Missing Area', 'Please enter the property area.');
+      return false;
+    }
+
+    setStep1({
+      title: title.trim(),
+      description: description.trim(),
+      propertyType,
+      area: area.trim(),
+    });
+    return true;
+  }
+
   return (
     <View className="flex-1 bg-background">
       <ScrollView className="flex-1" contentContainerStyle={{ paddingBottom: 40 }}>
@@ -47,6 +77,8 @@ export default function Step1Basic() {
           <TextInput
             placeholder="e.g. Modern Glass Penthouse"
             placeholderTextColor="#747780"
+            value={title}
+            onChangeText={setTitle}
             className="bg-surface-container-low rounded-[14px] px-4 py-3.5 text-on-surface mb-4"
           />
 
@@ -56,14 +88,20 @@ export default function Step1Basic() {
             placeholderTextColor="#747780"
             multiline
             numberOfLines={4}
+            value={description}
+            onChangeText={setDescription}
             className="bg-surface-container-low rounded-[14px] px-4 py-3.5 text-on-surface min-h-[100px] mb-4"
           />
 
           <Text className="text-on-surface-variant text-sm font-semibold mb-2">Type</Text>
           <View className="flex-row flex-wrap gap-2 mb-4">
-            {['Apartment', 'Villa', 'Commercial'].map((t, i) => (
-              <TouchableOpacity key={t} className={`px-5 py-2.5 rounded-full ${i === 0 ? 'bg-primary' : 'bg-surface-container-low'}`}>
-                <Text className={`text-sm font-semibold ${i === 0 ? 'text-on-primary' : 'text-on-surface-variant'}`}>{t}</Text>
+            {PROPERTY_TYPES.map((t) => (
+              <TouchableOpacity
+                key={t}
+                onPress={() => setPropertyType(t)}
+                className={`px-5 py-2.5 rounded-full ${propertyType === t ? 'bg-primary' : 'bg-surface-container-low'}`}
+              >
+                <Text className={`text-sm font-semibold ${propertyType === t ? 'text-on-primary' : 'text-on-surface-variant'}`}>{t}</Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -73,15 +111,25 @@ export default function Step1Basic() {
             placeholder="2,400"
             placeholderTextColor="#747780"
             keyboardType="numeric"
+            value={area}
+            onChangeText={setArea}
             className="bg-surface-container-low rounded-[14px] px-4 py-3.5 text-on-surface mb-2"
           />
         </View>
 
         <View className="flex-row gap-3 px-5 mt-8">
-          <TouchableOpacity className="flex-1 py-4 border-2 border-primary rounded-full items-center">
+          <Link href="/(seller)/dashboard" className="flex-1 py-4 border-2 border-primary rounded-full items-center">
             <Text className="text-primary font-semibold">Back</Text>
-          </TouchableOpacity>
-          <Link href="/(seller)/add-property/step-2-rooms" className="flex-1 py-4 bg-primary rounded-full items-center flex-row justify-center">
+          </Link>
+          <Link
+            href="/(seller)/add-property/step-2-rooms"
+            onPress={(e) => {
+              if (!saveAndContinue()) {
+                e.preventDefault();
+              }
+            }}
+            className="flex-1 py-4 bg-primary rounded-full items-center flex-row justify-center"
+          >
             <Text className="text-on-primary font-semibold mr-2">Next</Text>
             <MaterialIcons name="chevron-right" size={20} color="#fff" />
           </Link>

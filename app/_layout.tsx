@@ -39,6 +39,8 @@ export default function RootLayout() {
           <Stack.Screen name="(seller)/analytics" />
           <Stack.Screen name="(seller)/availability-settings" />
           <Stack.Screen name="(seller)/profile" />
+          <Stack.Screen name="(seller)/ar-capture" />
+          <Stack.Screen name="(seller)/capture-checklist" />
           <Stack.Screen name="(seller)/add-property/step-1-basic" />
           <Stack.Screen name="(seller)/add-property/step-2-rooms" />
           <Stack.Screen name="(seller)/add-property/step-3-capture" />
