@@ -119,7 +119,7 @@ export default function History() {
           <MaterialIcons name="calendar-today" size={22} color="#44474f" />
           <Text className="text-xs font-semibold text-on-surface-variant">Appointments</Text>
         </Link>
-        <Link href="/(buyer)/history" className="flex-col items-center justify-center">
+        <Link href="/(buyer)/profile" className="flex-col items-center justify-center">
           <MaterialIcons name="person" size={22} color="#835400" />
           <Text className="text-xs font-bold text-secondary">Profile</Text>
         </Link>

@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Switch } from 'react-native';
-import { Link } from 'expo-router';
+import { View, Text, ScrollView, TouchableOpacity, Switch, Image } from 'react-native';
+import { Link, useRouter } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
+import { signOut } from '@/services/authService';
 import { useAuthStore } from '@/store/authStore';
 
 const ROWS = [
@@ -25,7 +26,22 @@ const SUPPORT = [
 
 export default function Profile() {
   const { user, logout } = useAuthStore();
+  const router = useRouter();
   const [darkMode, setDarkMode] = useState(false);
+  const roleLabel = user?.role
+    ? `${user.role[0].toUpperCase()}${user.role.slice(1)} Account`
+    : 'Account';
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+    } catch (e: any) {
+      console.warn('Sign out error:', e?.message);
+    } finally {
+      logout();
+      router.replace('/(auth)/login');
+    }
+  };
 
   return (
     <View className="flex-1 bg-background">
@@ -37,7 +53,7 @@ export default function Profile() {
               <View className="w-10 h-10 rounded-full bg-surface-container-high ring-2 ring-primary/10 items-center justify-center">
                 <MaterialIcons name="person" size={22} color="#03224d" />
               </View>
-              <Text className="text-[24px] font-bold text-primary">Hi {user?.fullName?.split(' ')[0] || 'Ahmed'} 🎧</Text>
+              <Text className="text-[24px] font-bold text-primary">Hi {user?.fullName?.split(' ')[0] || 'there'} 🎧</Text>
             </View>
             <TouchableOpacity className="w-10 h-10 items-center justify-center rounded-full bg-surface-container-lowest shadow-sm">
               <MaterialIcons name="notifications" size={22} color="#03224d" />
@@ -47,14 +63,15 @@ export default function Profile() {
 
         {/* Account card */}
         <View className="mx-5 mt-5 bg-white rounded-[20px] shadow-sm border border-surface-container-low p-5 items-center">
-          <View className="w-20 h-20 rounded-full bg-surface-container-high items-center justify-center mb-3">
-            <MaterialIcons name="person" size={40} color="#03224d" />
-          </View>
-          <View className="flex-row items-center gap-2">
-            <Text className="text-xl font-bold text-primary">Ahmed Al-Sayed</Text>
-            <MaterialIcons name="verified" size={16} color="#835400" />
-          </View>
-          <Text className="text-xs font-semibold text-secondary mt-0.5">Verified Buyer Account</Text>
+          {user?.avatar ? (
+            <Image source={{ uri: user.avatar }} className="w-20 h-20 rounded-full mb-3" resizeMode="cover" />
+          ) : (
+            <View className="w-20 h-20 rounded-full bg-surface-container-high items-center justify-center mb-3">
+              <MaterialIcons name="person" size={40} color="#03224d" />
+            </View>
+          )}
+          <Text className="text-xl font-bold text-primary">{user?.fullName || 'User'}</Text>
+          <Text className="text-xs font-semibold text-secondary mt-0.5">{roleLabel}</Text>
           <TouchableOpacity className="mt-4 py-2.5 px-5 bg-surface-container-low rounded-full flex-row items-center gap-2">
             <MaterialIcons name="edit" size={16} color="#03224d" />
             <Text className="text-primary font-semibold text-sm">Edit Profile</Text>
@@ -124,7 +141,7 @@ export default function Profile() {
 
         {/* Logout */}
         <TouchableOpacity
-          onPress={() => logout()}
+          onPress={handleLogout}
           className="mx-5 mt-6 py-4 bg-white border-2 border-error/20 rounded-full items-center flex-row justify-center"
         >
           <MaterialIcons name="logout" size={18} color="#ba1a1a" style={{ marginRight: 8 }} />
@@ -151,7 +168,7 @@ export default function Profile() {
           <MaterialIcons name="calendar-today" size={22} color="#44474f" />
           <Text className="text-xs font-semibold text-on-surface-variant">Appointments</Text>
         </Link>
-        <Link href="/(buyer)/history" className="flex-col items-center justify-center">
+        <Link href="/(buyer)/profile" className="flex-col items-center justify-center">
           <MaterialIcons name="person" size={22} color="#835400" />
           <Text className="text-xs font-bold text-secondary">Profile</Text>
         </Link>

@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Switch } from 'react-native';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
+import { signOut } from '@/services/authService';
 import { useAuthStore } from '@/store/authStore';
 
 const SETTINGS = [
@@ -26,7 +27,19 @@ const SUPPORT = [
 
 export default function SellerProfile() {
   const { user, logout } = useAuthStore();
+  const router = useRouter();
   const [darkMode, setDarkMode] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+    } catch (e: any) {
+      console.warn('Sign out error:', e?.message);
+    } finally {
+      logout();
+      router.replace('/(auth)/login');
+    }
+  };
 
   return (
     <View className="flex-1 bg-background">
@@ -126,7 +139,7 @@ export default function SellerProfile() {
         </View>
 
         <TouchableOpacity
-          onPress={() => logout()}
+          onPress={handleLogout}
           className="mx-5 mt-6 py-4 bg-white border-2 border-error/20 rounded-full items-center flex-row justify-center"
         >
           <MaterialIcons name="logout" size={18} color="#ba1a1a" style={{ marginRight: 8 }} />

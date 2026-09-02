@@ -1,11 +1,23 @@
 import '../global.css';
+import { useEffect } from 'react';
 import { Stack, ThemeProvider, DefaultTheme } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { View, Platform } from 'react-native';
 import 'react-native-reanimated';
 import { SettingsProvider } from '@/contexts/SettingsContext';
+import { getCurrentUser, onAuthStateChange } from '@/services/authService';
+import { useAuthStore } from '@/store/authStore';
 
 export default function RootLayout() {
+  const setUser = useAuthStore((state) => state.setUser);
+
+  useEffect(() => {
+    getCurrentUser().then(setUser);
+
+    const { data } = onAuthStateChange((user) => setUser(user));
+    return () => data?.subscription?.unsubscribe();
+  }, [setUser]);
+
   return (
     <SettingsProvider>
       <ThemeProvider value={DefaultTheme}>

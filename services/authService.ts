@@ -1,5 +1,44 @@
 import { supabase } from './supabase';
 import { User } from '@/types/user';
+import type { User as SupabaseUser } from '@supabase/supabase-js';
+
+interface ProfileRow {
+  full_name: string;
+  role: 'buyer' | 'seller' | 'admin';
+  phone: string | null;
+  avatar_url: string | null;
+  created_at: string;
+}
+
+async function fetchProfile(userId: string): Promise<ProfileRow | null> {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('full_name, role, phone, avatar_url, created_at')
+    .eq('id', userId)
+    .maybeSingle();
+
+  if (error) {
+    console.warn('fetchProfile:', error.message);
+    return null;
+  }
+
+  return (data as ProfileRow) ?? null;
+}
+
+function toAppUser(authUser: SupabaseUser | null, profile: ProfileRow | null): User | null {
+  if (!authUser) return null;
+
+  return {
+    id: authUser.id,
+    email: authUser.email ?? '',
+    fullName: profile?.full_name || authUser.user_metadata?.full_name || '',
+    role: profile?.role ?? 'buyer',
+    avatar: profile?.avatar_url || authUser.user_metadata?.avatar_url || undefined,
+    phone: profile?.phone || authUser.user_metadata?.phone || undefined,
+    createdAt: profile?.created_at || authUser.created_at,
+    updatedAt: profile?.created_at || authUser.created_at,
+  };
+}
 
 export async function signIn(email: string, password: string): Promise<User | null> {
   const { data, error } = await supabase.auth.signInWithPassword({
@@ -11,19 +50,21 @@ export async function signIn(email: string, password: string): Promise<User | nu
     throw error;
   }
 
-  return data.user as unknown as User;
+  const profile = await fetchProfile(data.user.id);
+  return toAppUser(data.user, profile);
 }
 
 export async function signUp(
   email: string,
   password: string,
-  fullName: string
+  fullName: string,
+  phone?: string
 ): Promise<User | null> {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
-      data: { full_name: fullName },
+      data: { full_name: fullName, phone },
     },
   });
 
@@ -31,7 +72,10 @@ export async function signUp(
     throw error;
   }
 
-  return data.user as unknown as User;
+  if (!data.user) return null;
+
+  const profile = await fetchProfile(data.user.id);
+  return toAppUser(data.user, profile);
 }
 
 export async function signOut(): Promise<void> {
@@ -49,12 +93,18 @@ export async function resetPassword(email: string): Promise<void> {
 }
 
 export async function getCurrentUser(): Promise<User | null> {
-  const { data: { user } } = await supabase.auth.getUser();
-  return user as unknown as User | null;
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return null;
+
+  const profile = await fetchProfile(user.id);
+  return toAppUser(user, profile);
 }
 
 export function onAuthStateChange(callback: (user: User | null) => void) {
   return supabase.auth.onAuthStateChange((_event, session) => {
-    callback(session?.user as unknown as User | null);
+    callback(toAppUser(session?.user ?? null, null));
   });
 }

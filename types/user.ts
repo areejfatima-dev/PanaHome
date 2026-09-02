@@ -5,6 +5,10 @@ export interface User {
   role: 'buyer' | 'seller' | 'admin';
   avatar?: string;
   phone?: string;
+  user_metadata?: {
+    full_name?: string;
+    phone?: string;
+  };
   createdAt: string;
   updatedAt: string;
 }

@@ -44,7 +44,7 @@ export default function Signup() {
     }
     setLoading(true);
     try {
-      const user = await signUp(email, password, fullName);
+      const user = await signUp(email, password, fullName, phone);
       setUser(user);
       router.replace('/(buyer)/home');
     } catch (e: any) {

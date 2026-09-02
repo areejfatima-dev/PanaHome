@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { Link } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useAuthStore } from '@/store/authStore';
 
 const FEATURED = [
   {
@@ -60,6 +61,9 @@ const RECOMMENDED = [
 const CHIPS = ['All', 'Houses', 'Apartments', 'AR-Ready', 'Verified Only'];
 
 export default function BuyerHome() {
+  const { user } = useAuthStore();
+  const displayName = user?.user_metadata?.full_name ?? user?.fullName ?? 'there';
+
   return (
     <View className="flex-1 bg-background">
       <ScrollView className="flex-1" contentContainerStyle={{ paddingBottom: 120 }}>
@@ -69,7 +73,7 @@ export default function BuyerHome() {
             <View className="w-10 h-10 rounded-full bg-surface-container-high ring-2 ring-primary/10 items-center justify-center">
               <MaterialIcons name="person" size={22} color="#03224d" />
             </View>
-            <Text className="text-[24px] font-bold text-primary">Hi Ahmed 👋</Text>
+            <Text className="text-[24px] font-bold text-primary">Hi {displayName} 👋</Text>
           </View>
           <TouchableOpacity className="w-10 h-10 items-center justify-center rounded-full bg-surface-container-lowest shadow-sm">
             <MaterialIcons name="notifications" size={22} color="#03224d" />
@@ -231,7 +235,7 @@ export default function BuyerHome() {
           <MaterialIcons name="calendar-today" size={22} color="#44474f" />
           <Text className="text-xs font-semibold text-on-surface-variant">Appointments</Text>
         </Link>
-        <Link href="/(buyer)/history" className="flex-col items-center justify-center">
+        <Link href="/(buyer)/profile" className="flex-col items-center justify-center">
           <MaterialIcons name="person" size={22} color="#44474f" />
           <Text className="text-xs font-semibold text-on-surface-variant">Profile</Text>
         </Link>
