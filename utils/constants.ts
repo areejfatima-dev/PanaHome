@@ -31,6 +31,8 @@ export const ROUTES = {
     EDIT_PROPERTY: '/(seller)/edit-property',
     ANALYTICS: '/(seller)/analytics',
     AVAILABILITY_SETTINGS: '/(seller)/availability-settings',
+    CAPTURE_CHECKLIST: '/(seller)/capture-checklist',
+    AR_CAPTURE: '/(seller)/ar-capture',
     ADD_PROPERTY: {
       STEP_1: '/(seller)/add-property/step-1-basic',
       STEP_2: '/(seller)/add-property/step-2-rooms',

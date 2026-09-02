@@ -11,6 +11,13 @@ __pycache__/
 # Secrets / MCP credentials
 .opencode/mcp.json
 
+# Temp scripts
+check-schema.js
+
+# Personal planning (not shared with team)
+pla.md
+AR_AI_Features_Plan.md
+
 # Generated native directories (CNG workflow)
 android/
 ios/

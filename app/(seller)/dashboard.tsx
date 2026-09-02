@@ -44,7 +44,7 @@ export default function SellerDashboard() {
           </Link>
           <Link href="/(seller)/analytics" className="flex-1 bg-white border border-surface-container rounded-[18px] p-4 flex-row items-center gap-3">
             <MaterialIcons name="insights" size={22} color="#835400" />
-            <Text className="text-primary font-bold">View Analytics</Text>
+            <Text className="text-primary font-bold">Analytics</Text>
           </Link>
         </View>
 
